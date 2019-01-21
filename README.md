@@ -3,7 +3,11 @@ Group project for SYSC 3303
 
 Responsibilities:
 Floor.java - Sean
+
 Scheduler.java - Mav
+
 Elevator.java - Seb
-             - Andrew
+
+          - Andrew
+
 documentation - everyone
