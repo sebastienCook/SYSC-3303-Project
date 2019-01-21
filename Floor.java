@@ -9,9 +9,12 @@ public class Floor {
    DatagramPacket sendPacket, receivePacket;
    DatagramSocket sendReceiveSocket;
    
-   int selectDestinationButton;
-   int requestFloorButton;
-   boolean isInElevator;	// stores in
+   int requestFloorButton;    // 1 is going up, 0 is going down
+   int currentFloor;          // the floor of the current object
+   boolean floorLamp = false;   // 
+   int directionLamp;
+   int arrivalSensors
+   
    
    public Floor()
    {
@@ -26,33 +29,16 @@ public class Floor {
       }
    }
 
-   public void sendAndReceive()
+   public void sendAndReceive(int n)
    {
       // Prepare a DatagramPacket and send it via sendReceiveSocket
  
-      String s = "Anyone there?";
-      System.out.println("Client: sending a packet containing:\n" + s);
+      System.out.println("Floor: sending a packet containing:\n" + requestFloorButton);
 
-      // Java stores characters as 16-bit Unicode values, but 
-      // DatagramPackets store their messages as byte arrays.
-      // Convert the String into bytes according to the platform's 
-      // default character encoding, storing the result into a new 
-      // byte array.
-
-      byte msg[] = s.getBytes();
+      byte msg[] = requestFloorButton.getBytes();
 
       // Construct a datagram packet that is to be sent to a specified port 
       // on a specified host.
-      // The arguments are:
-      //  msg - the message contained in the packet (the byte array)
-      //  msg.length - the length of the byte array
-      //  InetAddress.getLocalHost() - the Internet address of the 
-      //     destination host.
-      //     In this example, we want the destination to be the same as
-      //     the source (i.e., we want to run the client and server on the
-      //     same computer). InetAddress.getLocalHost() returns the Internet
-      //     address of the local host.
-      //  5000 - the destination port number on the destination host.
       try {
          sendPacket = new DatagramPacket(msg, msg.length,
                                          InetAddress.getLocalHost(), 5000);
@@ -62,7 +48,7 @@ public class Floor {
       }
 
       System.out.println("Client: Sending packet:");
-      System.out.println("To host: " + sendPacket.getAddress());
+      System.out.println("To Scheduler: " + sendPacket.getAddress());
       System.out.println("Destination host port: " + sendPacket.getPort());
       int len = sendPacket.getLength();
       System.out.println("Length: " + len);
@@ -79,7 +65,8 @@ public class Floor {
       }
 
       System.out.println("Client: Packet sent.\n");
-
+      elevatorLight = true; // light switches on
+      
       // Construct a DatagramPacket for receiving packets up 
       // to 100 bytes long (the length of the byte array).
 
