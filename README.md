@@ -8,6 +8,6 @@ Scheduler.java - Mav
 
 Elevator.java - Seb
 
-          - Andrew
+Scheduler/Elevator - Andrew
 
 documentation - everyone
