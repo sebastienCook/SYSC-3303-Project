@@ -134,7 +134,7 @@ public class Scheduler {
 			// System.out.println(received);
 		}
 		//decode data packet from elevator and update status bars for elevators
-		if(fromPort == 2) { //received from elevator
+		else { //received from elevator
 			System.out.println("Received from elevator");
 			int elevatorNumber = data[0];
 			int floorDecode = data[2];
