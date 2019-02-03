@@ -1,4 +1,4 @@
-package main;
+
 
 //This class is the floor for the project
 //Last edited January 21st, 2016
@@ -35,6 +35,10 @@ public class Floor {
 	   try {
 	      // Construct a datagram socket and bind it to any available port on the local host machine
 	      sendReceiveSocket = new DatagramSocket();
+	      if (currFloor > numOfFloors) {
+	    	  System.out.println("This floor is too high");
+	    	  System.exit(1);
+	      }
 	      this.currentFloor = currFloor;
 	      this.floorLamp = 0;
 	      this.directionLamp = 2;
@@ -60,27 +64,37 @@ public class Floor {
 	}
 	
 	public void sendInstructions(String line) {
-		   System.out.println(line);	// For testing, prints each line of the input file 
+			// For testing, prints line of the input file
+			System.out.println("Request made: " + line);	
 		   
 		   String[] splitted = line.split("\\s+");
 		   
 		   byte msg[] = new byte[3];	// Bit 0 - Direction 	Bit 1,2 - current Floor
-
-		   if (splitted[2] == "up") {
+		   
+		   // Direction
+		   if (splitted[2].equals("up")) {
 			   msg[0] = 1;
 			   this.directionLamp = 1;
 			   this.floorButton = 1;
-		   } else if (splitted[2] == "down") {
+		   } else if (splitted[2].equals("down")) {
 			   msg[0] = 0;
 			   this.directionLamp = 0;
 			   this.floorButton = 0;
+		   } else {
+			   System.out.println("Input file format incorrect");
+			   System.exit(1);
 		   }
 		   
-		   // Working on this if statement
-		   if (splitted[1].length() > 1) {
-			   msg[1] = 0;
+		   // Current floor
+		   if (splitted[1].length() > 1) {	// if floor is in double digits
+			   byte n1 = (byte) (Integer.parseInt(splitted[1])/10);	// get first digit of string
+			   byte n2 = (byte) (Integer.parseInt(splitted[1])%10);	// get last digit of string
+			   msg[1] = n1;
+			   msg[2] = n2;
 		   } else {
-			  // msg[1] =
+			   byte n = (byte) (Integer.parseInt(splitted[1]));
+			   msg[1] = 0;
+			   msg[2] = n;
 		   }
 		   
 		   try {
@@ -98,8 +112,11 @@ public class Floor {
 		      System.exit(1);
 		   }
 		   
-		   System.out.println("Contents: \n" + msg);
-		   System.out.println("Floor: Elevator request sent.\n");
+		   System.out.print("Contents sent: " );
+		   for (int i = 0; i < msg.length; i++) {	// Printing Byte array contents
+			   System.out.print(msg[i]);
+		   }
+		   System.out.println("\nElevator request sent.\n");
 		   
 		   // Now receiving
 		   byte data[] = new byte[3];
@@ -121,74 +138,7 @@ public class Floor {
 		
 	}
 	
-	public void sendAndReceive(int n)
-	{
-	//   // Prepare a DatagramPacket and send it via sendReceiveSocket
-	//
-	//   System.out.println("Floor: sending a packet containing:\n" + requestFloorButton);
-	//
-	//   byte msg[] = allLines.getBytes();
-	//
-	//   // Construct a datagram packet that is to be sent to a specified port 
-	//   // on a specified host.
-	//   try {
-	//      sendPacket = new DatagramPacket(msg, msg.length,
-	//                                    InetAddress.getLocalHost(), 5000);
-	//   } catch (UnknownHostException e) {
-	//      e.printStackTrace();
-	//      System.exit(1);
-	//   }
-	//
-	//   System.out.println("Client: Sending packet:");
-	//   System.out.println("To Scheduler: " + sendPacket.getAddress());
-	//   System.out.println("Destination host port: " + sendPacket.getPort());
-	//   int len = sendPacket.getLength();
-	//   System.out.println("Length: " + len);
-	//   System.out.print("Containing: ");
-	//   System.out.println(new String(sendPacket.getData(),0,len)); // or could print "s"
-	//
-	//   // Send the datagram packet to the server via the send/receive socket. 
-	//
-	//   try {
-	//      sendReceiveSocket.send(sendPacket);
-	//   } catch (IOException e) {
-	//      e.printStackTrace();
-	//      System.exit(1);
-	//   }
-	//
-	//   System.out.println("Client: Packet sent.\n");
-	//   elevatorLight = true; // light switches on
-	//   
-	//   // Construct a DatagramPacket for receiving packets up 
-	//   // to 100 bytes long (the length of the byte array).
-	//
-	//   byte data[] = new byte[100];
-	//   receivePacket = new DatagramPacket(data, data.length);
-	//
-	//   try {
-	//      // Block until a datagram is received via sendReceiveSocket.  
-	//      sendReceiveSocket.receive(receivePacket);
-	//   } catch(IOException e) {
-	//      e.printStackTrace();
-	//      System.exit(1);
-	//   }
-	//
-	//   // Process the received datagram.
-	//   System.out.println("Client: Packet received:");
-	//   System.out.println("From host: " + receivePacket.getAddress());
-	//   System.out.println("Host port: " + receivePacket.getPort());
-	//   len = receivePacket.getLength();
-	//   System.out.println("Length: " + len);
-	//   System.out.print("Containing: ");
-	//
-	//   // Form a String from the byte array.
-	//   String received = new String(data,0,len);   
-	//   System.out.println(received);
-	//
-	//   // We're finished, so close the socket.
-	//   sendReceiveSocket.close();
-	}
-	
+
 	public static void main(String args[])
 	{
 		  Floor Floors[] = new Floor[numOfFloors]; 
@@ -196,5 +146,6 @@ public class Floor {
 			  Floors[i-1] = new Floor(i);
 		  }
 	   Floors[0].readFile(fileName);
+	   
 	}
 }
