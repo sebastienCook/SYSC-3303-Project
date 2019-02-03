@@ -18,7 +18,7 @@ public class Scheduler {
 	int elevatorState1, elevatorState2, elevatorState3, //will have to turn these into thread safe
 		elevatorFloor1, elevatorFloor2, elevatorFloor3; //collections, ArrayList? 
 	Collection<Integer> c = Collections.synchronizedCollection(new ArrayList<Integer>(6)); //this will eventually be used to synch states (0-2) and current floors (3-5)	
-	static int ELEVATOR1PORT = 69, PACKETSIZE = 25, CLIENTPORT = 222, SELFPORT = 219;
+	static int ELEVATOR1PORT = 69, PACKETSIZE = 25, CLIENTPORT = 222, SELFPORT = 219, FLOORPORT = 238;
 
 	public Scheduler()
 	{
@@ -105,7 +105,7 @@ public class Scheduler {
 
 		//decode request and assign toFloor as the floor that will be sent to elevator
 
-		if(fromPort == 1) { //1 is arbitrary (from client/Button)
+		if(fromPort == FLOORPORT) { //1 is arbitrary (from client/Button)
 			System.out.println("recieved from floor");
 			byte msg[] = new byte[PACKETSIZE];
 			msg[0] = data[0]; //direction
