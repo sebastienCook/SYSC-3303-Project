@@ -10,11 +10,11 @@ public class Receiver extends Thread {
 	DatagramSocket receiveSocket;
 	DatagramPacket receivePacket;
 	
-	ArrayList<Floor> newFloor;
+	ArrayList<ElevatorFloor> newFloor;
 	
 	public Receiver(int port) {
 		portNum = port;
-		newFloor = new ArrayList<Floor>();
+		newFloor = new ArrayList<ElevatorFloor>();
 	}
 	
 	
@@ -28,7 +28,7 @@ public class Receiver extends Thread {
 	         System.exit(1);
 		}
 	}
-	public ArrayList<Floor> getQueue(){
+	public ArrayList<ElevatorFloor> getQueue(){
 		return newFloor;
 	}
 	
@@ -53,7 +53,7 @@ public class Receiver extends Thread {
 				int floor;
 				if(temp[1]==0) {floor = temp[2];}
 				else {floor = temp[2] + 10;};
-				Floor newRequest = new Floor(floor,dir);
+				ElevatorFloor newRequest = new Floor(floor,dir);
 				//add to queue
 				newFloor.add(newRequest);
 				receiveSocket.close();
