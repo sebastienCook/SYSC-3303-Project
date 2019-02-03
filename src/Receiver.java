@@ -53,7 +53,7 @@ public class Receiver extends Thread {
 				int floor;
 				if(temp[1]==0) {floor = temp[2];}
 				else {floor = temp[2] + 10;};
-				ElevatorFloor newRequest = new Floor(floor,dir);
+				ElevatorFloor newRequest = new ElevatorFloor(floor,dir);
 				//add to queue
 				newFloor.add(newRequest);
 				receiveSocket.close();

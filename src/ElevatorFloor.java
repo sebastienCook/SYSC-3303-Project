@@ -3,7 +3,7 @@ public class ElevatorFloor {
 	
 	private int floor;
 	private int direction; //0=stop 1=up 2=down
-	public ElevtorFloor(int floor, int dir) {
+	public ElevatorFloor(int floor, int dir) {
 		this.floor = floor;
 		this.direction = dir;
 	}
