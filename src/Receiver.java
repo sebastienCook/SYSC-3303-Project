@@ -47,6 +47,13 @@ public class Receiver extends Thread {
 			         e.printStackTrace();
 			         System.exit(1);
 			      }
+				System.out.println("Scheduler: Packet received:");
+				System.out.println("From host: " + receivePacket.getAddress());
+				System.out.println("Host port: " + receivePacket.getPort());
+				int len = receivePacket.getLength();
+				System.out.println("Length: " + len);
+				System.out.print("Containing: " );
+				
 				//temp format: t[0]=direction t[1 and 2]=floor
 				byte[] temp = receivePacket.getData();
 				int dir = temp[0];

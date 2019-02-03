@@ -101,10 +101,12 @@ public class Scheduler {
 		int len = receivePacket.getLength();
 		System.out.println("Length: " + len);
 		System.out.print("Containing: " );
+		System.out.println(new String(this.receivePacket.getData()));
 
 		//decode request and assign toFloor as the floor that will be sent to elevator
 
 		if(fromPort == 1) { //1 is arbitrary (from client/Button)
+			System.out.println("recieved from floor");
 			byte msg[] = new byte[PACKETSIZE];
 			msg[0] = data[0]; //direction
 			int floorRequest0 = data[1];
@@ -127,11 +129,13 @@ public class Scheduler {
 			System.out.println("Length: " + len);
 			System.out.print("Containing: ");
 			System.out.println(new String(sendPacket.getData(),0,len));
+			System.out.println(this.receivePacket.getData() + "\n");
 			// or (as we should be sending back the same thing)
 			// System.out.println(received);
 		}
 		//decode data packet from elevator and update status bars for elevators
 		if(fromPort == 2) { //received from elevator
+			System.out.println("Received from elevator");
 			int elevatorNumber = data[0];
 			int floorDecode = data[2];
 			int currFloor;

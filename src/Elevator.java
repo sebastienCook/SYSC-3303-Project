@@ -29,10 +29,10 @@ public class Elevator {
 	public Elevator(int floors, int elevatorNum) {
 		this.bottomFloor = 1;
 		this.topFloor = floors;
-		for(int i=1;i<=floors;i++) {
-			buttons[i]=i;
+		//for(int i=1;i<=floors;i++) {
+			//buttons[i]=i;
 			
-		}
+	//	}
 		this.elevatorNumber = elevatorNum;
 		this.motor = 0x0;
 		this.door = false;
@@ -143,7 +143,7 @@ public class Elevator {
 	public static void main(String[] args) throws IOException {
 		
 		Receiver link = new Receiver(69);
-		link.start();
+		link.run();
 		Elevator elevator = new Elevator(6,2);
 		while(true) {
 			elevator.organizeQueue();
