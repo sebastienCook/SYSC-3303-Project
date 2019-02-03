@@ -19,11 +19,12 @@ public class Floor {
 	static String fileName = ".//input.txt";
 	static int numOfFloors = 10;
 	static int SCHEDULER_PORT = 219;
+	static String temp;
+	static List<String> allLines;       // input file content
 	
-	List<String> allLines;       // input file content
 	Floor Floors[];
 	
-	int currentFloor;            // the floor of the current object 
+	int currentFloor;            // the floor of the current object. 2 is lobby
 	
 	int elevatorDirection; 		// 0 is stop, 1 up, 2 down
 	int floorButton;      		// 1 is going up, 0 is going down
@@ -49,19 +50,6 @@ public class Floor {
 	   }
 	}
 	
-	// Reads input files for elevator calls
-	public void readFile(String fileName) {
-	   Path path = Paths.get(fileName); 
-	   try {
-	 	  allLines = Files.readAllLines(path);
-	 	  for (String line : allLines) {
-				String temp = line;
-				sendInstructions(temp);
-	     }
-	   } catch (IOException e) {
-				e.printStackTrace();  
-	   }
-	}
 	
 	public void sendInstructions(String line) {
 			// For testing, prints line of the input file
@@ -141,11 +129,24 @@ public class Floor {
 
 	public static void main(String args[])
 	{
-		  Floor Floors[] = new Floor[numOfFloors]; 
-		  for (int i = 1; i <= numOfFloors; i++) {
-			  Floors[i-1] = new Floor(i);
-		  }
-	   Floors[0].readFile(fileName);
+	   Floor Floors[] = new Floor[numOfFloors]; 
+	   for (int i = 1; i <= numOfFloors; i++) {
+		  Floors[i-1] = new Floor(i);
+	   }
+		  
+	// Reads input files for elevator calls
+	   Path path = Paths.get(fileName); 
+	   try {
+	 	  allLines = Files.readAllLines(path);
+	 	  for (String line : allLines) {
+				temp = line;
+				String[] splitted = line.split("\\s+");			// split line
+				int floorNum = Integer.parseInt(splitted[1]);	// 
+				Floors[floorNum].sendInstructions(temp);
+	     }
+	   } catch (IOException e) {
+				e.printStackTrace();  
+	   }
 	   
 	}
 }
