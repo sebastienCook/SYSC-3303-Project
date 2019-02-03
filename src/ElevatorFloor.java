@@ -1,9 +1,9 @@
 
-public class Floor {
+public class ElevatorFloor {
 	
 	private int floor;
 	private int direction; //0=stop 1=up 2=down
-	public Floor(int floor, int dir) {
+	public ElevtorFloor(int floor, int dir) {
 		this.floor = floor;
 		this.direction = dir;
 	}
