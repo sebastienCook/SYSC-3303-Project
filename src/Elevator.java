@@ -86,7 +86,7 @@ public class Elevator {
 			if(this.currentFloor == this.serviceQueue.get(0)) {
 				this.motor = 0;
 				this.door = true;
-				this.displayButtons();
+				//this.displayButtons();
 				//Thread.sleep(1000);
 				this.door = false;
 				this.serviceQueue.remove(0);
@@ -97,9 +97,11 @@ public class Elevator {
 			else {this.currentFloor--;}
 		}
 		this.motor = 0;
+		
+		this.sendRequest(this.currentFloor, this.motor);
 	}
 	
-	public void displayButtons() throws IOException { //will display buttons for gui, but act as stud for new passengers boarding
+	/*public void displayButtons() throws IOException { //will display buttons for gui, but act as stud for new passengers boarding
 		//display button as gui
 		Random rand = new Random();
 		int newF;
@@ -112,29 +114,23 @@ public class Elevator {
 		newF = rand.nextInt(currentFloor);
 		dir = 2; //down 
 		}
-		this.sendRequest(newF, dir);
-	}
+		this.sendRequest(this.currentFloor, this.motor);
+	}*/
 	
-	public void sendRequest(int chosenFloor,int direction) throws IOException { //send new internal requests to the scheduler data-> ID,direction,floor,floor
-		
+	public void sendRequest(int currFloor,int direction) throws IOException { //send new internal requests to the scheduler data-> ID,direction,floor,floor
+		DatagramSocket sendSocket = new DatagramSocket();
 		byte data[] = new byte[4];
-		data[0] = (byte) this.elevatorNumber;
-		data[1] = (byte) direction;
-		if(chosenFloor>10) {
-			data[2]=(byte)1;
-			data[3] = (byte) (chosenFloor-10);
-		}
-		else {
-			data[2]=(byte)0;
-			data[3] = (byte) (chosenFloor);
-		}
+		data[0] = (byte) direction;
+		data[1] = (byte) currFloor;
+
 		
 		try {
 	         
-			DatagramSocket sendReceiveSocket = new DatagramSocket();
-			DatagramPacket sendPacket = new DatagramPacket(data, data.length,InetAddress.getLocalHost(), 23);
-			sendReceiveSocket.send(sendPacket);
+			
+			DatagramPacket sendPacket = new DatagramPacket(data, data.length, SEND_PORT_NUMBER);
+			sendSocket.send(sendPacket);
 	      } catch (SocketException se) {   // Can't create the socket.
+	    	  sendSocket.close();
 	         se.printStackTrace();
 	         System.exit(1);
 	      }
