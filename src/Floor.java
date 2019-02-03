@@ -17,7 +17,7 @@ public class Floor {
 	
 	static String fileName = ".//input.txt";
 	static int numOfFloors = 10;
-	static int SCHEDULER_PORT = 219;
+	static int SCHEDULER_PORT = 219, SELFPORT = 238;
 	static String temp;
 	static List<String> allLines;       // input file content
 	
@@ -33,7 +33,7 @@ public class Floor {
 	public Floor(int currFloor) {
 	   try {
 	      // Construct a datagram socket and bind it to any available port on the local host machine
-	      sendReceiveSocket = new DatagramSocket();
+	      sendReceiveSocket = new DatagramSocket(SELFPORT);
 	      if (currFloor > numOfFloors) {
 	    	  System.out.println("This floor is too high");
 	    	  System.exit(1);
