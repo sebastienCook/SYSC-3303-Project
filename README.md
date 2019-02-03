@@ -2,7 +2,10 @@
 Group project for SYSC 3303
 Execute Order Scheduler - Elevator - Floor;
 Responsibilities:
+
+
 Floor.java - Sean
+
 This Class will create 10 Floor objects, read an input file, then send the appropriate commands to the scheduler. It will wait for the scheduler to respond and will display the response.
 
 Scheduler.java - Mav
